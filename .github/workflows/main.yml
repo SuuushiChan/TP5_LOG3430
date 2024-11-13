@@ -16,9 +16,14 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
+#         Ajout 1:
           pip install -r requirements.txt
       - name: Start Flask server
         run: |
+#         Ajout 2:
           python server.py &
           echo "Waiting for Flask server to start"
           sleep 30
+      - name: Tests de charge
+        run: |
+          locust --headless -f locustfile.py -u 10000 -r 100 --run-time 2m --host http://127.0.0.1:5000
